@@ -8,4 +8,6 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
 
 	Seller findByName(String name);
 
+	Seller findByNameAndIdNot(String name, Long id);
+
 }
