@@ -12,7 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 import com.guilhermefgl.crudsellerclient.model.enums.GenderEnum;
 
@@ -35,7 +35,7 @@ public class Client implements Serializable {
 	@Column(name = "sexo", length = 1)
 	private GenderEnum gender;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.REFRESH)
 	private Set<Seller> sellers = new HashSet<>();
 
 	public Long getId() {
