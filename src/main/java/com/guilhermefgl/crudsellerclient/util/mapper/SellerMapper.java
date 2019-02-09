@@ -29,6 +29,7 @@ public final class SellerMapper {
 			client.setId(c.getId());
 			client.setName(c.getName());
 			client.setGender(c.getGender());
+			client.setCpf(c.getCpf());
 			return client;
 		}).collect(Collectors.toSet());
 		seller.setClients(clients);
@@ -51,6 +52,7 @@ public final class SellerMapper {
 			clientDto.setId(c.getId());
 			clientDto.setName(c.getName());
 			clientDto.setGender(c.getGender());
+			clientDto.setCpf(c.getCpf());
 			return clientDto;
 		}).collect(Collectors.toList());
 		sellerDto.setClients(clientsDto);

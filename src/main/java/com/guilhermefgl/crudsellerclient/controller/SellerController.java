@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,18 +18,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.guilhermefgl.crudsellerclient.controller.dto.ClientDto;
 import com.guilhermefgl.crudsellerclient.controller.dto.SellerDto;
 import com.guilhermefgl.crudsellerclient.model.Seller;
+import com.guilhermefgl.crudsellerclient.service.ClientService;
 import com.guilhermefgl.crudsellerclient.service.SellerService;
 import com.guilhermefgl.crudsellerclient.util.Constants;
+import com.guilhermefgl.crudsellerclient.util.mapper.ClientMapper;
 import com.guilhermefgl.crudsellerclient.util.mapper.SellerMapper;
 
 @RestController
 @RequestMapping("/api/seller")
+@CrossOrigin(origins = "*")
 public class SellerController {
 
 	@Autowired
 	private SellerService service;
+
+	@Autowired
+	private ClientService clientService;
 
 	@GetMapping
 	public ResponseEntity<List<SellerDto>> list() {
@@ -75,6 +83,19 @@ public class SellerController {
 		service.delete(seller.get());
 
 		return ResponseEntity.status(HttpStatus.OK).body(null);
+	}
+
+	@GetMapping(value = "/{id}/clients")
+	public ResponseEntity<List<ClientDto>> listClients(@PathVariable("id") Long id) {
+		Optional<Seller> seller = service.find(id);
+
+		if (!seller.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+
+		List<ClientDto> clientsDto = clientService.listClientBySellerId(id).stream().map(c -> ClientMapper.toDto(c))
+				.collect(Collectors.toList());
+		return ResponseEntity.status(HttpStatus.OK).body(clientsDto);
 	}
 
 	private ResponseEntity<Object> persist(SellerDto sellerDto, BindingResult result) {
