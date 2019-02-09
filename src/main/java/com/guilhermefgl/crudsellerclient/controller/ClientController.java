@@ -32,6 +32,12 @@ public class ClientController {
 
 	@GetMapping
 	public ResponseEntity<List<ClientDto>> list() {
+		List<ClientDto> body = service.list().stream().map(c -> ClientMapper.toDto(c)).collect(Collectors.toList());
+		return ResponseEntity.status(HttpStatus.OK).body(body);
+	}
+
+	@GetMapping(value = "/seller")
+	public ResponseEntity<List<ClientDto>> listWithSeller() {
 		List<ClientDto> body = service.listClientAndSeller().stream().map(c -> ClientMapper.toDto(c))
 				.collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(body);

@@ -13,6 +13,8 @@ public interface ClientDao {
 
 	void delete(Client client);
 
+	List<Client> list();
+
 	List<Client> listClientAndSeller();
 
 	List<Client> listClientBySellerId(Long sellerId);

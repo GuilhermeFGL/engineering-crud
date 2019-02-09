@@ -32,6 +32,11 @@ public class ClientService implements ClientDao {
 	}
 
 	@Override
+	public List<Client> list() {
+		return repository.findAll();
+	}
+
+	@Override
 	public List<Client> listClientAndSeller() {
 		return repository.listClientAndSeller();
 	}
