@@ -11,8 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "vendedor")
 public class Seller implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,7 +29,7 @@ public class Seller implements Serializable {
 	@Column(length = 11, nullable = false, unique = true)
 	private String cpf;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "seller", cascade = { CascadeType.REMOVE })
 	private Set<Client> clients = new HashSet<>();
 
 	public Long getId() {

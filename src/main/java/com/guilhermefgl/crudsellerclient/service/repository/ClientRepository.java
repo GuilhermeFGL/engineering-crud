@@ -10,10 +10,10 @@ import com.guilhermefgl.crudsellerclient.model.Client;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-	@Query("SELECT c, s.id FROM Client c LEFT JOIN FETCH Seller s")
+	@Query("SELECT c FROM Client c JOIN FETCH c.seller s")
 	List<Client> listClientAndSeller();
 
-	@Query("SELECT c, s.id FROM Client c LEFT JOIN FETCH Seller s WHERE s.id = ?1")
+	@Query("SELECT c FROM Client c JOIN FETCH c.seller s WHERE s.id = ?1")
 	List<Client> listClientBySellerId(Long sellerId);
 
 	Optional<Client> findByName(String name);

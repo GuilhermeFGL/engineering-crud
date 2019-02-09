@@ -9,11 +9,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.guilhermefgl.crudsellerclient.model.enums.GenderEnum;
 
 @Entity
+@Table(name = "cliente")
 public class Client implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -33,6 +36,7 @@ public class Client implements Serializable {
 	private GenderEnum gender;
 
 	@ManyToOne
+	@JoinColumn(name = "vendedor_id")
 	private Seller seller;
 
 	public Long getId() {
