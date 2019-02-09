@@ -1,9 +1,5 @@
 package com.guilhermefgl.crudsellerclient.util.mapper;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.guilhermefgl.crudsellerclient.controller.dto.ClientDto;
 import com.guilhermefgl.crudsellerclient.controller.dto.SellerDto;
 import com.guilhermefgl.crudsellerclient.model.Client;
@@ -25,14 +21,11 @@ public class ClientMapper {
 		client.setCpf(clientDto.getCpf());
 		client.setGender(clientDto.getGender());
 
-		Set<Seller> sellers = clientDto.getSellers().stream().map(s -> {
+		if (clientDto.getSeller() != null) {
 			Seller seller = new Seller();
-			seller.setId(s.getId());
-			seller.setName(s.getName());
-			seller.setCpf(s.getCpf());
-			return seller;
-		}).collect(Collectors.toSet());
-		client.setSellers(sellers);
+			seller.setId(clientDto.getSeller().getId());
+			client.setSeller(seller);
+		}
 
 		return client;
 	}
@@ -48,12 +41,11 @@ public class ClientMapper {
 		clientDto.setCpf(client.getCpf());
 		clientDto.setGender(client.getGender());
 
-		List<SellerDto> sellersDto = client.getSellers().stream().map(s -> {
+		if (client.getSeller() != null) {
 			SellerDto sellerDto = new SellerDto();
-			sellerDto.setName(s.getName());
-			return sellerDto;
-		}).collect(Collectors.toList());
-		clientDto.setSellers(sellersDto);
+			sellerDto.setName(client.getSeller().getName());
+			clientDto.setSellers(sellerDto);
+		}
 
 		return clientDto;
 	}

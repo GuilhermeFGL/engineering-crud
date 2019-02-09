@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Seller implements Serializable {
@@ -27,7 +27,7 @@ public class Seller implements Serializable {
 	@Column(length = 11, nullable = false, unique = true)
 	private String cpf;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Client> clients = new HashSet<>();
 
 	public Long getId() {

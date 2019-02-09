@@ -1,10 +1,7 @@
 package com.guilhermefgl.crudsellerclient.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,7 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.guilhermefgl.crudsellerclient.model.enums.GenderEnum;
 
@@ -35,8 +32,8 @@ public class Client implements Serializable {
 	@Column(name = "sexo", length = 1)
 	private GenderEnum gender;
 
-	@ManyToMany(cascade = CascadeType.REFRESH)
-	private Set<Seller> sellers = new HashSet<>();
+	@ManyToOne
+	private Seller seller;
 
 	public Long getId() {
 		return id;
@@ -70,12 +67,12 @@ public class Client implements Serializable {
 		this.gender = gender;
 	}
 
-	public Set<Seller> getSellers() {
-		return sellers;
+	public Seller getSeller() {
+		return seller;
 	}
 
-	public void setSellers(Set<Seller> sellers) {
-		this.sellers = sellers;
+	public void setSeller(Seller seller) {
+		this.seller = seller;
 	}
 
 }

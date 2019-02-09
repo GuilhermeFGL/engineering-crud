@@ -1,12 +1,15 @@
 package com.guilhermefgl.crudsellerclient.service.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.guilhermefgl.crudsellerclient.model.Client;
 
 public interface ClientDao {
 
-	void save(Client client);
+	Optional<Client> find(Long id);
+
+	Client save(Client client);
 
 	void delete(Client client);
 

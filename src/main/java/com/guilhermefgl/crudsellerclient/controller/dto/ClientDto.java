@@ -1,8 +1,5 @@
 package com.guilhermefgl.crudsellerclient.controller.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
@@ -17,7 +14,7 @@ public class ClientDto {
 	private String name;
 	private String cpf;
 	private GenderEnum gender;
-	private List<SellerDto> sellers = new ArrayList<>();
+	private SellerDto seller;
 
 	public Long getId() {
 		return id;
@@ -51,12 +48,12 @@ public class ClientDto {
 		this.gender = gender;
 	}
 
-	public List<SellerDto> getSellers() {
-		return sellers;
+	public SellerDto getSeller() {
+		return seller;
 	}
 
-	public void setSellers(List<SellerDto> sellers) {
-		this.sellers = sellers;
+	public void setSellers(SellerDto seller) {
+		this.seller = seller;
 	}
 
 	public void validate(BindingResult result) {

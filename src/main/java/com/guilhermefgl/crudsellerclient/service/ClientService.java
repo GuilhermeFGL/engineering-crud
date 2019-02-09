@@ -1,13 +1,14 @@
 package com.guilhermefgl.crudsellerclient.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.guilhermefgl.crudsellerclient.model.Client;
-import com.guilhermefgl.crudsellerclient.repository.ClientRepository;
 import com.guilhermefgl.crudsellerclient.service.dao.ClientDao;
+import com.guilhermefgl.crudsellerclient.service.repository.ClientRepository;
 
 @Service
 public class ClientService implements ClientDao {
@@ -16,8 +17,13 @@ public class ClientService implements ClientDao {
 	private ClientRepository repository;
 
 	@Override
-	public void save(Client client) {
-		repository.save(client);
+	public Optional<Client> find(Long id) {
+		return repository.findById(id);
+	}
+
+	@Override
+	public Client save(Client client) {
+		return repository.save(client);
 	}
 
 	@Override

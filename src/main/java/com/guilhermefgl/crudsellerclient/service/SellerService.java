@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.guilhermefgl.crudsellerclient.model.Seller;
-import com.guilhermefgl.crudsellerclient.repository.SellerRepository;
 import com.guilhermefgl.crudsellerclient.service.dao.SellerDao;
+import com.guilhermefgl.crudsellerclient.service.repository.SellerRepository;
 
 @Service
 public class SellerService implements SellerDao {

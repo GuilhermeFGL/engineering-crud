@@ -1,4 +1,4 @@
-package com.guilhermefgl.crudsellerclient.repository;
+package com.guilhermefgl.crudsellerclient.service.repository;
 
 import java.util.List;
 import java.util.Optional;

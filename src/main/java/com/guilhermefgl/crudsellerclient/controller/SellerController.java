@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,24 +28,24 @@ import com.guilhermefgl.crudsellerclient.util.mapper.SellerMapper;
 
 @RestController
 @RequestMapping("/api/seller")
-@CrossOrigin(origins = "*")
 public class SellerController {
 
 	@Autowired
-	private SellerService service;
+	private SellerService sellerService;
 
 	@Autowired
 	private ClientService clientService;
 
 	@GetMapping
 	public ResponseEntity<List<SellerDto>> list() {
-		List<SellerDto> body = service.list().stream().map(s -> SellerMapper.toDto(s)).collect(Collectors.toList());
+		List<SellerDto> body = sellerService.list().stream().map(s -> SellerMapper.toDto(s))
+				.collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(body);
 	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<SellerDto> list(@PathVariable("id") Long id) {
-		Optional<Seller> seller = service.find(id);
+		Optional<Seller> seller = sellerService.find(id);
 
 		if (seller.isPresent()) {
 			return ResponseEntity.status(HttpStatus.OK).body(SellerMapper.toDto(seller.get()));
@@ -65,7 +64,7 @@ public class SellerController {
 			BindingResult result) {
 		sellerDto.setId(id);
 
-		Optional<Seller> seller = service.find(id);
+		Optional<Seller> seller = sellerService.find(id);
 		if (!seller.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
@@ -75,19 +74,19 @@ public class SellerController {
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> remove(@PathVariable("id") Long id) {
-		Optional<Seller> seller = service.find(id);
+		Optional<Seller> seller = sellerService.find(id);
 		if (!seller.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 
-		service.delete(seller.get());
+		sellerService.delete(seller.get());
 
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
 	@GetMapping(value = "/{id}/clients")
 	public ResponseEntity<List<ClientDto>> listClients(@PathVariable("id") Long id) {
-		Optional<Seller> seller = service.find(id);
+		Optional<Seller> seller = sellerService.find(id);
 
 		if (!seller.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -105,11 +104,11 @@ public class SellerController {
 		}
 
 		Seller seller = SellerMapper.toModel(sellerDto);
-		if (!service.isNameUniq(seller)) {
+		if (!sellerService.isNameUniq(seller)) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Constants.Messages.MSG_NAME_NOT_UNIQ);
 		}
 
-		seller = service.save(seller);
+		seller = sellerService.save(seller);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(SellerMapper.toDto(seller));
 	}
