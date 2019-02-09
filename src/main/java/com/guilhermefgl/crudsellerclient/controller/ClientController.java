@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.guilhermefgl.crudsellerclient.controller.dto.ClientDto;
 import com.guilhermefgl.crudsellerclient.model.Client;
+import com.guilhermefgl.crudsellerclient.model.Seller;
 import com.guilhermefgl.crudsellerclient.service.ClientService;
+import com.guilhermefgl.crudsellerclient.service.SellerService;
 import com.guilhermefgl.crudsellerclient.util.Constants;
 import com.guilhermefgl.crudsellerclient.util.mapper.ClientMapper;
 
@@ -28,24 +30,28 @@ import com.guilhermefgl.crudsellerclient.util.mapper.ClientMapper;
 public class ClientController {
 
 	@Autowired
-	private ClientService service;
+	private ClientService clientService;
+
+	@Autowired
+	private SellerService sellerService;
 
 	@GetMapping
 	public ResponseEntity<List<ClientDto>> list() {
-		List<ClientDto> body = service.list().stream().map(c -> ClientMapper.toDto(c)).collect(Collectors.toList());
+		List<ClientDto> body = clientService.list().stream().map(c -> ClientMapper.toDto(c))
+				.collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(body);
 	}
 
 	@GetMapping(value = "/seller")
 	public ResponseEntity<List<ClientDto>> listWithSeller() {
-		List<ClientDto> body = service.listClientAndSeller().stream().map(c -> ClientMapper.toDto(c))
+		List<ClientDto> body = clientService.listClientAndSeller().stream().map(c -> ClientMapper.toDto(c))
 				.collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(body);
 	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ClientDto> list(@PathVariable("id") Long id) {
-		Optional<Client> client = service.find(id);
+		Optional<Client> client = clientService.find(id);
 
 		if (client.isPresent()) {
 			return ResponseEntity.status(HttpStatus.OK).body(ClientMapper.toDto(client.get()));
@@ -56,6 +62,13 @@ public class ClientController {
 
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody ClientDto clientDto, BindingResult result) {
+		if (clientDto.getSeller() != null && clientDto.getSeller().getId() != null) {
+			Optional<Seller> seller = sellerService.find(clientDto.getSeller().getId());
+			if (!seller.isPresent()) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Constants.Messages.MSG_SELLER_NOT_FOUND);
+			}
+		}
+
 		return persist(clientDto, result);
 	}
 
@@ -64,9 +77,16 @@ public class ClientController {
 			BindingResult result) {
 		clientDto.setId(id);
 
-		Optional<Client> client = service.find(id);
+		Optional<Client> client = clientService.find(id);
 		if (!client.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+
+		if (clientDto.getSeller() != null && clientDto.getSeller().getId() != null) {
+			Optional<Seller> seller = sellerService.find(clientDto.getSeller().getId());
+			if (!seller.isPresent()) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Constants.Messages.MSG_SELLER_NOT_FOUND);
+			}
 		}
 
 		return persist(clientDto, result);
@@ -74,12 +94,12 @@ public class ClientController {
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> remove(@PathVariable("id") Long id) {
-		Optional<Client> client = service.find(id);
+		Optional<Client> client = clientService.find(id);
 		if (!client.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 
-		service.delete(client.get());
+		clientService.delete(client.get());
 
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
@@ -91,11 +111,11 @@ public class ClientController {
 		}
 
 		Client client = ClientMapper.toModel(clientDto);
-		if (!service.isNameUniq(client)) {
+		if (!clientService.isNameUniq(client)) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Constants.Messages.MSG_NAME_NOT_UNIQ);
 		}
 
-		client = service.save(client);
+		client = clientService.save(client);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(ClientMapper.toDto(client));
 	}
