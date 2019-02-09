@@ -1,5 +1,8 @@
 package com.guilhermefgl.crudsellerclient.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +17,18 @@ public class SellerService implements SellerDao {
 	private SellerRepository repository;
 
 	@Override
-	public void save(Seller seller) {
-		repository.save(seller);
+	public List<Seller> list() {
+		return repository.findAll();
+	}
+
+	@Override
+	public Optional<Seller> find(Long id) {
+		return repository.findById(id);
+	}
+
+	@Override
+	public Seller save(Seller seller) {
+		return repository.save(seller);
 	}
 
 	@Override
@@ -26,9 +39,9 @@ public class SellerService implements SellerDao {
 	@Override
 	public boolean isNameUniq(Seller seller) {
 		if (seller.getId() == null) {
-			return repository.findByName(seller.getName()) == null;
+			return !repository.findByName(seller.getName()).isPresent();
 		}
-		return repository.findByNameAndIdNot(seller.getName(), seller.getId()) == null;
+		return !repository.findByNameAndIdNot(seller.getName(), seller.getId()).isPresent();
 	}
 
 }

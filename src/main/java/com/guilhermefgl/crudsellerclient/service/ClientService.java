@@ -38,9 +38,9 @@ public class ClientService implements ClientDao {
 	@Override
 	public boolean isNameUniq(Client client) {
 		if (client.getId() == null) {
-			return repository.findByName(client.getName()) == null;
+			return !repository.findByName(client.getName()).isPresent();
 		}
-		return repository.findByNameAndIdNot(client.getName(), client.getId()) == null;
+		return !repository.findByNameAndIdNot(client.getName(), client.getId()).isPresent();
 	}
 
 }

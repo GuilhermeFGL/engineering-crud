@@ -1,8 +1,9 @@
 package com.guilhermefgl.crudsellerclient.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,8 +26,8 @@ public class Seller implements Serializable {
 	@Column(length = 11, nullable = false, unique = true)
 	private String cpf;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Client client;
+	@ManyToOne
+	private Set<Client> clients = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -52,12 +53,12 @@ public class Seller implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public Client getClient() {
-		return client;
+	public Set<Client> getClients() {
+		return clients;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setClients(Set<Client> clients) {
+		this.clients = clients;
 	}
 
 }

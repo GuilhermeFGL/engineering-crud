@@ -1,6 +1,7 @@
 package com.guilhermefgl.crudsellerclient.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,8 +16,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 	@Query("SELECT c, s.id FROM Client c LEFT JOIN FETCH Seller s WHERE s.id = ?1")
 	List<Client> listClientBySellerId(Long sellerId);
 
-	Client findByName(String name);
+	Optional<Client> findByName(String name);
 
-	Client findByNameAndIdNot(String name, Long id);
+	Optional<Client> findByNameAndIdNot(String name, Long id);
 
 }
