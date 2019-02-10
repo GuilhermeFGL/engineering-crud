@@ -44,7 +44,7 @@ public class ClientMapper {
 		if (client.getSeller() != null) {
 			SellerDto sellerDto = new SellerDto();
 			sellerDto.setName(client.getSeller().getName());
-			clientDto.setSellers(sellerDto);
+			clientDto.setSeller(sellerDto);
 		}
 
 		return clientDto;

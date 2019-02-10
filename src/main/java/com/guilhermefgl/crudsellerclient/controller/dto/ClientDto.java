@@ -10,6 +10,9 @@ import com.guilhermefgl.crudsellerclient.util.validor.NameValidator;
 
 public class ClientDto {
 
+	private static final String PARAM_NAME = "name";
+	private static final String PARAM_CPF = "cpf";
+
 	private Long id;
 	private String name;
 	private String cpf;
@@ -52,16 +55,16 @@ public class ClientDto {
 		return seller;
 	}
 
-	public void setSellers(SellerDto seller) {
+	public void setSeller(SellerDto seller) {
 		this.seller = seller;
 	}
 
 	public void validate(BindingResult result) {
 		if (!NameValidator.isValid(name)) {
-			result.addError(new ObjectError(name, Constants.Messages.MSG_NAME_INVALID));
+			result.addError(new ObjectError(PARAM_NAME, Constants.Messages.MSG_NAME_INVALID));
 		}
 		if (!CpfValidator.isValid(cpf)) {
-			result.addError(new ObjectError(cpf, Constants.Messages.MSG_CPF_INVALID));
+			result.addError(new ObjectError(PARAM_CPF, Constants.Messages.MSG_CPF_INVALID));
 		}
 	}
 
