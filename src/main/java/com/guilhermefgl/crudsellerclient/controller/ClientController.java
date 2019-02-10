@@ -50,7 +50,7 @@ public class ClientController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ClientDto> list(@PathVariable("id") Long id) {
+	public ResponseEntity<ClientDto> show(@PathVariable("id") Long id) {
 		Optional<Client> client = clientService.find(id);
 
 		if (client.isPresent()) {
