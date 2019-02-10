@@ -1,6 +1,6 @@
 # Spring Crud
 
-Spring Boot application for CRUD to Sellers and Clients
+Spring Boot REST Application for Vendors and Clients CRUD
 
 **To run the Spring application:**
 ` mvn spring-boot:run `
