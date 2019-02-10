@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/GuilhermeFGL/spring-crud.svg?branch=master)](https://travis-ci.org/GuilhermeFGL/spring-crud)
+
 # Spring Crud
 
 Spring Boot REST Application for Vendors and Clients CRUD
@@ -34,9 +36,9 @@ Spring Boot REST Application for Vendors and Clients CRUD
 ```
 [POST] api/client
 [BODY] {
-	"name": String,
-	"cpf": String,
-	"gender": String,
+  "name": String,
+  "cpf": String,
+  "gender": String,
   "seller" {
     "id": Integer
   }
@@ -47,9 +49,9 @@ Spring Boot REST Application for Vendors and Clients CRUD
 ```
 [PUT] api/client/{Integer id}
 [BODY] {
-	"name": String,
-	"cpf": String,
-	"gender": String,
+  "name": String,
+  "cpf": String,
+  "gender": String,
   "seller" {
     "id": Integer
   }
@@ -81,8 +83,8 @@ Spring Boot REST Application for Vendors and Clients CRUD
 ```
 [POST] api/seller
 [BODY] {
-	"name": String,
-	"cpf": String
+  "name": String,
+  "cpf": String
 }
 ```
 
@@ -90,8 +92,8 @@ Spring Boot REST Application for Vendors and Clients CRUD
 ```
 [PUT] api/seller/{Integer id}
 [BODY] {
-	"name": String,
-	"cpf": String
+  "name": String,
+  "cpf": String
 }
 ```
 - **Delete**
